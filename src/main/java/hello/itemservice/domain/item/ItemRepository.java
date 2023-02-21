@@ -1,0 +1,21 @@
+package hello.itemservice.domain.item;
+
+import org.springframework.stereotype.Repository;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@Repository
+public class ItemRepository {
+
+    private static final Map<Long, Item> store = new HashMap<>();
+    // 동시성 문제 해결을 할 거면 HashMap이 아닌 ConcurrentHashMap<>()을 써야함
+    private static long sequence = 0L; // static
+    // 동시 접근일 땐 long이 아닌 다른 걸 사용해야 함.
+
+    public Item save(Item item) {
+        item.setId(++sequence);
+        store.put(item.getId(), item);
+        return item;
+    }
+}
